@@ -7,12 +7,12 @@
     {
         "id": 2,
         "isComplete": false,
-        "value": "Release meaa-4"
+        "value": "Do a lunch walk"
     },
     {
         "id": 3,
         "isComplete": true,
-        "value": "Complete qa"
+        "value": "Make an example"
     },
     {
         "id": 4,
