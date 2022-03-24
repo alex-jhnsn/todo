@@ -1,9 +1,39 @@
+const data = [
+  {
+      "id": 1,
+      "isComplete": false,
+      "value": "Make to do website"
+  },
+  {
+      "id": 2,
+      "isComplete": false,
+      "value": "Do a lunch walk"
+  },
+  {
+      "id": 3,
+      "isComplete": true,
+      "value": "Make an example"
+  },
+  {
+      "id": 4,
+      "isComplete": true,
+      "value": "Go get a coffee"
+  }
+];
+
+function getLocalData() {
+  return new Promise(resolve => {
+    resolve(data);
+  });
+}
+
 function getData () {
-  return fetch('http://127.0.0.1:5000/todo')
-    .then(res => res.json())
-    .then(data => {
-      return data;
-    });
+  return getLocalData();
+  // return fetch('http://127.0.0.1:5000/todo')
+  //   .then(res => res.json())
+  //   .then(data => {
+  //     return data;
+  //   });
 }
 
 function renderItem (id, isComplete, value) {
@@ -28,7 +58,8 @@ window.onload = () => {
   $todoContainer.addEventListener('change', e => {
     console.log(e.target.value);
 
-    if (e.target.type == 'checkbox')
-      console.log('checkbox')
+    if (e.target.type == 'checkbox') {
+      
+    }
   });
 };
