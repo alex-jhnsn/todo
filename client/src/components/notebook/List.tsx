@@ -14,7 +14,7 @@ const ListContainer = styled.div`
 export default function List ({ todos }: ListProps) {
   return (
     <ListContainer>
-      { todos.map(todo => <ListItem key={todo.id} {...todo} />) }
+      {/* { todos.map(todo => <ListItem key={todo.id} {...todo} />) } */}
     </ListContainer>
   )
 }

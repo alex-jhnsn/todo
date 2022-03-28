@@ -1,4 +1,5 @@
 import { Todo } from "../types/Todo";
+import { TodoListItem } from "../types/TodoListItem";
 
 const data: Todo[] = [
   {
@@ -23,8 +24,8 @@ const data: Todo[] = [
   }
 ];
 
-export default function GetTodos(): Promise<Todo[]> {
+export default function GetTodos(): Promise<TodoListItem[]> {
   return new Promise(resolve => {
-    resolve(data);
+    resolve(data.map(todo => ({ id: todo.id, value: todo.value, isComplete: todo.isComplete, isNew: false }) ));
   });
 };
