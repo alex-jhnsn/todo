@@ -12,7 +12,6 @@ const ListContainer = styled.div`
 export default function List () {
 
   const [todos, setTodos] = useState<TodoListItem[]>([]);
-  const [canAdd, setCanAdd] = useState(false);
 
   useEffect(() => {
     if (!todos.length)
@@ -22,8 +21,6 @@ export default function List () {
   const initTodos = async () => {
     const todos = await GetTodos();
     setTodos(todos);
-    setCanAdd(true);
-    console.log(todos);
   }
 
   const addTodo = () => {

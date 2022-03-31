@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
-import { isPropertySignature } from "typescript";
 
 const Foo = styled.div`
   margin: 24px 0;

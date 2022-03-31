@@ -1,5 +1,3 @@
-import { faAdd } from "@fortawesome/free-solid-svg-icons";
-import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const NotebookContainer = styled.svg`
