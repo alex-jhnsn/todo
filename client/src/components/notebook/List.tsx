@@ -1,20 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Todo } from "../../types/Todo";
+import GetTodos from "../../api/api";
+import { TodoListItem } from "../../types/TodoListItem";
 import ListItem from "./ListItem";
-
-interface ListProps {
-  todos: Todo[];
-}
+import { v4 as uuid } from "uuid";
 
 const ListContainer = styled.div`
   padding: 0 24px;
 `;
 
-export default function List ({ todos }: ListProps) {
+export default function List () {
+
+  const [todos, setTodos] = useState<TodoListItem[]>([]);
+  const [canAdd, setCanAdd] = useState(false);
+
+  useEffect(() => {
+    if (!todos.length)
+      initTodos();
+  }); 
+
+  const initTodos = async () => {
+    const todos = await GetTodos();
+    setTodos(todos);
+    setCanAdd(true);
+    console.log(todos);
+  }
+
+  const addTodo = () => {
+    setTodos([...todos, {id: uuid(), value: "", isComplete: false}]);
+  }
+
+  const removeTodo = (id: string) => {
+    setTodos(todos.filter(t => t.id !== id));
+  }
+
   return (
     <ListContainer>
-      {/* { todos.map(todo => <ListItem key={todo.id} {...todo} />) } */}
+      { todos.map((todo, index) => 
+        <ListItem 
+          key={todo.id}
+          updateFunction={() => {console.log("Update")}} 
+          isLastItem={index === todos.length - 1} 
+          addNewFunction={addTodo}
+          removeFunction={removeTodo}
+          {...todo} />) }
     </ListContainer>
-  )
+  );
 }

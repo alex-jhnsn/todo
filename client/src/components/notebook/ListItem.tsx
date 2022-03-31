@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
+import { isPropertySignature } from "typescript";
 
 const Foo = styled.div`
   margin: 24px 0;
@@ -24,50 +25,57 @@ interface ListItemProps {
   id: string;
   value: string;
   isComplete: boolean;
-  isNew?: boolean;
-  updateFunction: Function
+  isLastItem: boolean;
+  updateFunction: Function;
+  addNewFunction: Function;
+  removeFunction: (id: string) => void;
 }
 
-export default function ListItem (props: ListItemProps) {
+export default function ListItem ({ id, value, isComplete, isLastItem, updateFunction, addNewFunction, removeFunction }: ListItemProps) {
 
-  const [isComplete, setIsComplete] = useState(props.isComplete);
-  const [value, setValue] = useState(props.value);
-  const [isNew, setIsNew] = useState(props.isNew);
-  const isFirstRender = useRef(true);
+  const [isChecked, setIsChecked] = useState(isComplete);
+  const [currentValue, setValue] = useState(value);
 
-  const handleUpdate = useCallback((value, isComplete) => {
-    console.log(`${props.id}: ${value} ${isComplete ? "- complete" : ""}`);
-    props.updateFunction(props.id, value, isComplete)
-  }, [props])
+  useCallback(() => {
+    updateFunction();
+  }, [value, isChecked]);
 
-  useEffect(() => {
-    if (value)
-      setIsNew(false);
-
-  }, [value]);
-
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    
-    // if (!isNew)
-      handleUpdate(value, isComplete);
-  }, [value, isComplete]);
-
-  const handleToggleComplete = () => {
-    setIsComplete(!isComplete);
+  const handleToggleChecked = () => {
+    setIsChecked(!isChecked);
   }
 
   const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value);
   }
 
+  const handleEnterPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if(e.key === 'Enter' && isLastItem && currentValue !== ""){
+      addNewFunction();
+    }
+  }
+
+  const handleOnBlur = () => {
+    if (currentValue === "")
+      removeFunction(id);
+  }
+
   return (
     <Foo>
-      <Checkbox type="checkbox" name={value} value={props.id} checked={isComplete} onChange={handleToggleComplete} disabled={isNew} />
-      <Textbox type="text" value={value} onChange={handleValueChange} autoFocus={isNew} />
+      <Checkbox 
+        type="checkbox"
+        name={value}
+        value={id}
+        checked={isChecked}
+        onChange={handleToggleChecked}
+        disabled={currentValue === ""} />
+      
+      <Textbox 
+        type="text"
+        value={currentValue}
+        onChange={handleValueChange}
+        onKeyUp={handleEnterPressed}
+        onBlur={handleOnBlur}
+        autoFocus={isLastItem} />
     </Foo>
   )
 }

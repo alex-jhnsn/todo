@@ -26,6 +26,6 @@ const data: Todo[] = [
 
 export default function GetTodos(): Promise<TodoListItem[]> {
   return new Promise(resolve => {
-    resolve(data.map(todo => ({ id: todo.id, value: todo.value, isComplete: todo.isComplete, isNew: false }) ));
+    resolve(data.map(todo => ({ id: todo.id, value: todo.value, isComplete: todo.isComplete }) ));
   });
 };
